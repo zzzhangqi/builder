@@ -130,6 +130,17 @@ npm_node_modules() {
     fi
     # Deal with code UNABLE_TO_VERIFY_LEAF_SIGNATURE
     npm config set strict-ssl false -g
+    cat > $build_dir/.npmrc <<EOF
+# npm 镜像地址
+registry=https://registry.npmmirror.com
+
+# 二进制文件下载地址
+sass_binary_site=https://npmmirror.com/mirrors/node-sass
+phantomjs_cdnurl=https://npmmirror.com/mirrors/phantomjs
+electron_mirror=https://npmmirror.com/mirrors/electron
+profiler_binary_host_mirror=https://npmmirror.com/mirrors/node-inspector
+chromedriver_cdnurl=https://npmmirror.com/mirrors/chromedriver
+EOF
     monitor "npm-install" npm install --registry=${NPM_REGISTRY:-https://registry.npmmirror.com} --production=$production --unsafe-perm --userconfig $build_dir/.npmrc 2>&1
   else
     echo "Skipping (no package.json)"
